@@ -1,16 +1,11 @@
 // This is a simple *viewmodel* - JavaScript that defines the data and behavior of your UI
 function AppViewModel() {
 	var self = this;
-    this.firstName = ko.observable("Bert");
-    this.lastName = ko.observable("Bertington");
-    this.fullName = ko.computed(function() {
-        return this.firstName() + " " + this.lastName();    
-    }, this);
-    
-    this.inputSeq = ko.observable("Enter your Sequence here");
-    this.validatedSeq = ko.computed(function() {
-        return this.inputSeq().toUpperCase().replace(/[^ACGTNacgtn]/gi, "");    
-    }, this);
+ 
+    self.inputSeq = ko.observable("Enter your Sequence here");
+    self.validatedSeq = ko.computed(function() {
+        return self.inputSeq().toUpperCase().replace(/[^ACGTNacgtn]/gi, "");    
+    }, self);
 
 	self.formatedSeq = ko.pureComputed(function  () {
 		var retSeq = "";
@@ -22,11 +17,22 @@ function AppViewModel() {
 			retSeq += i + " " + self.validatedSeq().substring(i, i+60) + " "  + ((i+60 < vlen) ? i+60 : vlen ) + "\n";
 		}
 		return retSeq;
-	}, this);
+	}, self);
     
-	this.doubleSeq = ko.computed(function() {
+	self.doubleSeq = ko.computed(function() {
         return this.validatedSeq() + this.validatedSeq();    
-    }, this);
+    }, self);
 }
 
+
+function findORFs(seq) {
+	var regEx = /ATG((?!(TGA|TAG|TAA)).{3})*(NNN){1,}((?!(TGA|TAG|TAA)).{3})*(TAA|TGA|TAG)/gi;
+	var myArray;
+	while ((myArray = regEx.exec(str)) !== null) {
+  		var msg = 'Found ' + myArray[0] + '. ';
+  		msg += 'Next match starts at ' + regEx.lastIndex;
+  		console.log(msg);
+	}
+
+}
 
