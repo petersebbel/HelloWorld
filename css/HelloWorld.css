@@ -1,0 +1,30 @@
+.outerFrame {
+	border-style: solid;
+    border-width: 2px;
+    width: 600px;
+}
+
+
+.innerFrame {
+	
+	border-style: solid;
+    border-width: 1px;
+	
+}
+
+
+.pull-left {
+  float: left !important;
+}
+.pull-right {
+  float: right !important;
+}
+
+// Usage as mixins
+.element {
+  .pull-left();
+}
+.another-element {
+  .pull-right();
+}
+
