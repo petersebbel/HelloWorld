@@ -12,8 +12,6 @@ function AppViewModel() {
         return this.inputSeq().toUpperCase().replace(/[^ACGTNacgtn]/gi, "");    
     }, this);
 
-
-
 	self.formatedSeq = ko.pureComputed(function  () {
 		var retSeq = "";
 		var vlen = self.validatedSeq().length;
@@ -29,8 +27,6 @@ function AppViewModel() {
 	this.doubleSeq = ko.computed(function() {
         return this.validatedSeq() + this.validatedSeq();    
     }, this);
-    
-    
 }
 
 
