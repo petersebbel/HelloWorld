@@ -53,7 +53,7 @@ function findORFs(self) {
   		msg += 'Next match starts at ' + regEx.lastIndex;
   		console.log(msg);
   		retArray.push(myArray[0]);
-  		self.scaffoldArray.push(new scaffold(formatSeq(myArray[0]) , 1, regEx.lastIndex));
+  		self.scaffoldArray.push(new scaffold(formatSeq(myArray[0]) , myArray.index, regEx.lastIndex));
 	}
 	return retArray;
 }
