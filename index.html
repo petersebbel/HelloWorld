@@ -35,40 +35,48 @@
 <p><h1>LibReg</h1></p>
 
 
-<p>Library Sequence: <br/><textarea data-bind="textInput: inputSeq" ></textarea></p>
+<p>Library Sequence: <br/><textarea class="innerFrame" data-bind="textInput: inputSeq" ></textarea></p>
 
 <div class="outerFrame">
-<div class="pull-right">
-	<button type="button" class="btn btn-default pull-right"  aria-label="Remove"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+<div class="titleFrame">
+	<span>Library Name: <input  data-bind="textInput: libName" ></input></span>
+	<span class="pull-right minMax" onclick="toggleHide(this)">+</span>
+	<span class="pull-right minMax" onclick="toggleHide(this)">-</span>
+	
 </div>
-Something like a Div title
 	<div class="innerFrame">
-		Formatted: <pre data-bind="text: formatedSeq"></pre>
+		<pre data-bind="text: formatedSeq"></pre>
 	</div>
 </div>
-<table>
+<br/>
+<table class="ScaffoldTable">
     <thead><tr>
-        <th>Passenger name</th><th>Meal</th><th>Surcharge</th><th></th>
+        <th>Scaffold Name</th><th>start</th><th>end</th><th></th>
     </tr></thead>
     <tbody data-bind="foreach: scaffoldArray">
         <tr>
-            <td data-bind="text: name"></td>
+            <td><textarea class="innerFrame" data-bind="text: name"></textarea></td>
             <td data-bind="text: start"></td>
-           
         </tr>    
     </tbody>
 </table>
 <hr/>
 <dl data-bind="foreach: scaffoldArray">
-  <dt data-bind="text: name"></dt>
-  <dd data-bind="text: start"></dd>
-  <dd data-bind="text: end"></dd>
-  <dt>Milk</dt>
-  <dd>- white hot drink</dd>
+  <dt>
+  <div class="outerFrame">
+	<div class="titleFrame">
+			<span>Scaffold Name: <input  ></input></span>
+				<span class="pull-right minMax" onclick="toggleHide(this)">MinMax</span><br/>
+			<span>Start: <input data-bind="text: start"/></span>
+			<span class="pull-right">End: <input data-bind="text: end"/></span>
+	</div>
+	<div class="innerFrame">
+		<pre data-bind="text: name"></pre>
+	</div>
+  </dt>
+  <br/>
 </dl>
 <hr/>
-
-
 
 </body>
 </html>

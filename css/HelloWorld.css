@@ -1,15 +1,27 @@
 .outerFrame {
 	border-style: solid;
     border-width: 2px;
-    width: 600px;
+    width: 580px;
 }
 
+
+.titleFrame {
+	
+	border-style: solid;
+    border-width: 1px;
+	width: 580px;
+}
 
 .innerFrame {
 	
 	border-style: solid;
     border-width: 1px;
-	
+	width: 580px;
+}
+
+.ScaffoldTable{
+	border-style: solid;
+    border-width: 1px;
 }
 
 

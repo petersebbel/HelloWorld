@@ -6,36 +6,41 @@ function scaffold(name, start, end) {
     self.end = end;
 }
 
+
+function toggleHide(self) {
+	var that = this;
+	console.log("parent " + $(self).parent());
+	var parent = $(self).parent();
+		console.log(parent);
+	var sibling = parent.siblings();
+			console.log(sibling);
+	//var sibling = $(parent).sibling();
+		//alert("parent sibling " + sibling);
+		//$(self).parent().sibling().hide();
+		sibling.toggle();
+	
+}
+
 // This is a simple *viewmodel* - JavaScript that defines the data and behavior of your UI
 function AppViewModel() {
 	var self = this;
  	self.scaffoldArray = ko.observableArray();    // Initially an empty array
     self.inputSeq = ko.observable("Enter your Sequence here");
+	self.libName = ko.observable("Enter Library Name here");    
 
 
-    self.validatedSeq = ko.computed(function() {
+    self.validatedSeq = ko.pureComputed(function() {
         return self.inputSeq().toUpperCase().replace(/[^ACGTNacgtn]/gi, "");    
     }, self);
 
-	self.formatedSeq = ko.pureComputed(function  () {
-		var retSeq = "";
-		var vlen = self.validatedSeq().length;
-		for (var i = 0; i < vlen; i+= 60) {
-			for (var j = 0; j <  (vlen.toString().length - i.toString().length); j++) {
-				retSeq += " ";
-			}
-			retSeq += i + " " + self.validatedSeq().substring(i, i+60) + " "  + ((i+60 < vlen) ? i+60 : vlen ) + "\n";
-		}
-		return retSeq;
-	}, self);
-    
-	self.doubleSeq = ko.computed(function() {
-		//self.scaffoldArray = findORFs(self.validatedSeq()).slice();
-		findORFs(self);
-
-        return self.validatedSeq() + self.validatedSeq();    
+	self.doubleSeq = ko.pureComputed(function() {
+		return self.validatedSeq() + self.validatedSeq();    
     }, self);
-
+	
+	self.formatedSeq = ko.pureComputed(function() {
+		findORFs(self);
+		return formatSeq(self.validatedSeq());
+	}, self);
 }
 
 
@@ -48,9 +53,18 @@ function findORFs(self) {
   		msg += 'Next match starts at ' + regEx.lastIndex;
   		console.log(msg);
   		retArray.push(myArray[0]);
-  		self.scaffoldArray.push(new scaffold(myArray[0], 1, regEx.lastIndex));
+  		self.scaffoldArray.push(new scaffold(formatSeq(myArray[0]) , 1, regEx.lastIndex));
 	}
 	return retArray;
-
 }
 
+function formatSeq (seq){
+	var retSeq = "";
+	for (var i = 0; i < seq.length; i+= 60) {
+			for (var j = 0; j <  (seq.length.toString().length - i.toString().length); j++) {
+				retSeq += " ";
+			}
+			retSeq += " " + (i + 1) + " " + seq.substring(i, i+60) + " "  + ((i+60 < seq.length) ? i+60 : seq.length ) + "\n";
+		}
+	return retSeq;
+}
