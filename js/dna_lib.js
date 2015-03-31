@@ -261,6 +261,9 @@ function dna2aa(dna_seq) {
 		 case "CCC":
 			 aa = 'P';
 			break;
+		 case "NNN":
+			 aa = '?';
+			break;
 		default:
 			aa = "*";
 		}

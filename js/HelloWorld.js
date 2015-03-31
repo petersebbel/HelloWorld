@@ -53,7 +53,7 @@ function findORFs(self) {
   		msg += 'Next match starts at ' + regEx.lastIndex;
   		console.log(msg);
   		retArray.push(myArray[0]);
-  		self.scaffoldArray.push(new scaffold(formatSeq(myArray[0]) , myArray.index, regEx.lastIndex));
+  		self.scaffoldArray.push(new scaffold(formatSeqAA(myArray[0]) , myArray.index, regEx.lastIndex));
 	}
 	return retArray;
 }
@@ -65,6 +65,20 @@ function formatSeq (seq){
 				retSeq += " ";
 			}
 			retSeq += " " + (i + 1) + " " + seq.substring(i, i+60) + " "  + ((i+60 < seq.length) ? i+60 : seq.length ) + "\n";
+		}
+	return retSeq;
+}
+
+function formatSeqAA (seq){
+	var retSeq = "";
+	var aa= dna2aa(seq);
+	for (var i = 0; i < seq.length; i+= 60) {
+			var spacer = "";
+			for (var j = 0; j <  (seq.length.toString().length - i.toString().length); j++) {
+				spacer += " ";
+			}
+			retSeq += spacer + (i + 1) + " " + seq.substring(i, i+60) + " "  + ((i+60 < seq.length) ? i+60 : seq.length ) + "\n";
+			retSeq += spacer + (i + 1) + " " + aa.substring((i/3), (i+60)/3).split("").join("  ") + "   "  + ((i+60 < seq.length) ? i+60 : seq.length ) + "\n";
 		}
 	return retSeq;
 }
