@@ -4,6 +4,25 @@
     width: 580px;
 }
 
+.label-align {
+	display: inline-block;
+	width: 120px;
+	text-align: left
+}
+
+.input-align {
+	display: inline-block;
+	float: left;
+}
+
+.minMax {
+	
+	border-style: solid;
+    border-width: 1px;
+	
+}
+
+
 
 .titleFrame {
 	
@@ -13,16 +32,13 @@
 }
 
 .innerFrame {
-	
+	display: block;
 	border-style: solid;
     border-width: 1px;
 	width: 580px;
+
 }
 
-.ScaffoldTable{
-	border-style: solid;
-    border-width: 1px;
-}
 
 
 .pull-left {
@@ -39,4 +55,3 @@
 .another-element {
   .pull-right();
 }
-

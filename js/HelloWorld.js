@@ -1,11 +1,40 @@
 // Class to represent a scaffold
+function scaffoldName(name) {
+    var self = this;
+    self.scaffoldName = name;
+}
+
+
 function scaffold(name, start, end) {
+    var self = this;
+    self.scaffName = ko.observable(name);
+    self.start =     ko.observable(start);
+    self.end =       ko.observable(end);
+	self.RRs = [];
+	self.VRs = [];
+	self.MPs = [];
+	
+}
+function randomizedRegion(name, start, end) {
     var self = this;
     self.name = name;
     self.start = start;
     self.end = end;
 }
 
+function variableRegion(name, start, end) {
+    var self = this;
+    self.name = name;
+    self.start = start;
+    self.end = end;
+}
+
+function matureProtein(name, start, end) {
+    var self = this;
+    self.name = name;
+    self.start = start;
+    self.end = end;
+}
 
 function toggleHide(self) {
 	var that = this;
@@ -17,7 +46,7 @@ function toggleHide(self) {
 	//var sibling = $(parent).sibling();
 		//alert("parent sibling " + sibling);
 		//$(self).parent().sibling().hide();
-		sibling.toggle();
+		sibling.toggle(300);
 	
 }
 
@@ -48,12 +77,28 @@ function findORFs(self) {
 	var regEx = /ATG((?!(TGA|TAG|TAA)).{3})*(NNN){1,}((?!(TGA|TAG|TAA)).{3})*(TAA|TGA|TAG)/gi;
 	var myArray;
 	var retArray = [];
+	var scaffoldNum = 1;
 	while ((myArray = regEx.exec(self.validatedSeq())) !== null) {
   		var msg = 'Found ' + myArray[0] + '. ';
   		msg += 'Next match starts at ' + regEx.lastIndex;
   		console.log(msg);
-  		retArray.push(myArray[0]);
-  		self.scaffoldArray.push(new scaffold(formatSeqAA(myArray[0]) , myArray.index, regEx.lastIndex));
+  		retArray.push("Scaffold " + scaffoldNum.toString());
+  		self.scaffoldArray.push(new scaffold("Scaffold " + scaffoldNum.toString() , myArray.index, regEx.lastIndex));
+  		scaffoldNum++;
+	}
+	return retArray;
+}
+
+function findRRs(seq) {
+	var regEx = /(NNN){1,}/gi;
+	var myArray;
+	var retArray = [];
+	while ((myArray = regEx.exec(seq) !== null)) {
+  		var msg = 'Found ' + myArray[0] + '. ';
+  		msg += 'Next match starts at ' + regEx.lastIndex;
+  		console.log(msg);
+  		
+  		retArray.push(new randomizedRegion("name", myArray.index, regEx.lastIndex));
 	}
 	return retArray;
 }

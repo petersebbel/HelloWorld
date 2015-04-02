@@ -38,17 +38,36 @@
 <p>Library Sequence: <br/><textarea class="innerFrame" data-bind="textInput: inputSeq" ></textarea></p>
 
 <div class="outerFrame">
-<div class="titleFrame">
-	<span>Library Name: <input  data-bind="textInput: libName" ></input></span>
-	<span class="pull-right minMax" onclick="toggleHide(this)">+</span>
-	<span class="pull-right minMax" onclick="toggleHide(this)">-</span>
+	<div class="titleFrame">
 	
-</div>
+			<span>Library Name: <input  data-bind="textInput: libName" /></span>
+			<span class="pull-right minMax" onclick="toggleHide(this)">+-</span>
+	</div>
 	<div class="innerFrame">
 		<pre data-bind="text: formatedSeq"></pre>
 	</div>
 </div>
 <br/>
+
+<hr/>
+<dl data-bind="foreach: scaffoldArray">
+  <dt>
+  <div class="outerFrame">
+	<div class="titleFrame">
+				<span class="pull-right minMax" onclick="toggleHide(this)">+-</span>
+
+				<label class="label-align">Scaffold Name: </label><input  data-bind="textInput: scaffName"><br />
+
+				<label class="label-align">Start: </label>        <input  data-bind="value: start"><br />
+				<label class="label-align">End: </label>          <input  data-bind="value: end"><br />
+	</div>
+	<div class="innerFrame">
+		<pre data-bind="text: scaffName"></pre>
+	</div>
+  </dt>
+  <br/>
+</dl>
+<hr/>
 <table class="ScaffoldTable">
     <thead><tr>
         <th>Scaffold Name</th><th>start</th><th>end</th><th></th>
@@ -60,25 +79,6 @@
         </tr>    
     </tbody>
 </table>
-<hr/>
-<dl data-bind="foreach: scaffoldArray">
-  <dt>
-  <div class="outerFrame">
-	<div class="titleFrame">
-			<span>Scaffold Name: <input  ></input></span>
-				<span class="pull-right minMax" onclick="toggleHide(this)">MinMax</span><br/>
-			<span>Start: <input data-bind="value: start"/></span>
-			<span class="pull-right">End: <input data-bind="value: end"/></span>
-	</div>
-	<div class="innerFrame">
-		<pre data-bind="text: name"></pre>
-	</div>
-  </dt>
-  <br/>
-</dl>
-<hr/>
-
 </body>
 </html>
-
 
