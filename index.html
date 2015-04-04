@@ -54,28 +54,36 @@
   <dt>
   <div class="outerFrame">
 	<div class="titleFrame">
+					<span class="pull-right minMax" data-bind="click: $root.removeScaff" > x </span>
 				<span class="pull-right minMax" onclick="toggleHide(this)">+-</span>
 
-				<label class="label-align">Scaffold Name: </label><input  data-bind="textInput: scaffName"><br />
 
+				<label class="label-align">Scaffold Name: </label><input  data-bind="textInput: scaffName"><br />
 				<label class="label-align">Start: </label>        <input  data-bind="value: start"><br />
 				<label class="label-align">End: </label>          <input  data-bind="value: end"><br />
 	</div>
 	<div class="innerFrame">
-		<pre data-bind="text: scaffName"></pre>
+		<pre data-bind="text: seq"></pre>
 	</div>
+
+  </div>
+
+
   </dt>
   <br/>
 </dl>
+
+  	<button data-bind="click: $root.addScaff">Add Scaffold</button>
 <hr/>
-<table class="ScaffoldTable">
+<table class="scaffoldTable">
     <thead><tr>
         <th>Scaffold Name</th><th>start</th><th>end</th><th></th>
     </tr></thead>
     <tbody data-bind="foreach: scaffoldArray">
         <tr>
-            <td><textarea class="innerFrame" data-bind="text: name"></textarea></td>
-            <td data-bind="text: start"></td>
+            <td data-bind="text: scaffName"></td>
+            <td><span data-bind="value: start"></span></td>
+            <td data-bind="value: end"></td>
         </tr>    
     </tbody>
 </table>

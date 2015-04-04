@@ -1,20 +1,17 @@
 // Class to represent a scaffold
-function scaffoldName(name) {
-    var self = this;
-    self.scaffoldName = name;
-}
-
-
-function scaffold(name, start, end) {
+function scaffold(name, start, end, AVModel) {
     var self = this;
     self.scaffName = ko.observable(name);
     self.start =     ko.observable(start);
     self.end =       ko.observable(end);
+    self.seq =       ko.pureComputed(function() {
+		return formatSeqAA(AVModel.doubleSeq().substring(self.start(), self.end()));
+    	});
 	self.RRs = [];
 	self.VRs = [];
 	self.MPs = [];
-	
 }
+
 function randomizedRegion(name, start, end) {
     var self = this;
     self.name = name;
@@ -47,13 +44,12 @@ function toggleHide(self) {
 		//alert("parent sibling " + sibling);
 		//$(self).parent().sibling().hide();
 		sibling.toggle(300);
-	
 }
 
 // This is a simple *viewmodel* - JavaScript that defines the data and behavior of your UI
 function AppViewModel() {
 	var self = this;
- 	self.scaffoldArray = ko.observableArray();    // Initially an empty array
+
     self.inputSeq = ko.observable("Enter your Sequence here");
 	self.libName = ko.observable("Enter Library Name here");    
 
@@ -70,6 +66,20 @@ function AppViewModel() {
 		findORFs(self);
 		return formatSeq(self.validatedSeq());
 	}, self);
+	
+	 self.scaffoldArray = ko.observableArray();    // Initially an empty array
+	 
+	 
+	 self.addScaff = function(){
+		alert("Add Scaffold");
+		self.scaffoldArray.push(new scaffold("Scaffold 0 0" , 0 , 0, self));
+	}
+
+	self.removeScaff = function(scaffold) {
+		alert("Remove Scaffold " + scaffold.scaffName );
+		self.scaffoldArray.remove(scaffold);
+	}
+
 }
 
 
@@ -83,7 +93,9 @@ function findORFs(self) {
   		msg += 'Next match starts at ' + regEx.lastIndex;
   		console.log(msg);
   		retArray.push("Scaffold " + scaffoldNum.toString());
-  		self.scaffoldArray.push(new scaffold("Scaffold " + scaffoldNum.toString() , myArray.index, regEx.lastIndex));
+  		
+  		self.scaffoldArray.push(new scaffold("Scaffold " + myArray.index.toString() + " " + regEx.lastIndex.toString(), myArray.index, regEx.lastIndex, self));
+  		//, self.doubleSeq().substring(myArray.index, regEx.lastIndex)
   		scaffoldNum++;
 	}
 	return retArray;
@@ -105,6 +117,9 @@ function findRRs(seq) {
 
 function formatSeq (seq){
 	var retSeq = "";
+	if (seq === undefined) {
+		return;
+	}
 	for (var i = 0; i < seq.length; i+= 60) {
 			for (var j = 0; j <  (seq.length.toString().length - i.toString().length); j++) {
 				retSeq += " ";
@@ -116,6 +131,10 @@ function formatSeq (seq){
 
 function formatSeqAA (seq){
 	var retSeq = "";
+	
+	if (seq === undefined) {
+		return "";
+	}
 	var aa= dna2aa(seq);
 	for (var i = 0; i < seq.length; i+= 60) {
 			var spacer = "";
