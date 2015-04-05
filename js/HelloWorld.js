@@ -6,17 +6,28 @@ function scaffold(name, start, end, AVModel) {
     self.end =       ko.observable(end);
     self.seq =       ko.pureComputed(function() {
 		return formatSeqAA(AVModel.doubleSeq().substring(self.start(), self.end()));
-    	});
-	self.RRs = [];
-	self.VRs = [];
-	self.MPs = [];
+    });
+	//self.RRs = ko.observableArray();
+
+	//self.MPs = ko.observableArray(  [
+	//	{ matStart: ' Building some cool apps.', 
+	//	matName: ' What a nice day.', 
+	//	matEnd: ' Just saw a famous celebrity eating lard. Yum.' }
+      //      ]);
+    //  	self.VRs = ko.observableArray();
+	//self.MPs = ko.observableArray([
+	//new matureProtein("mature " + name, self.start(), self.end())
+	//	
+	//]);
 }
 
-function randomizedRegion(name, start, end) {
+function randomizedRegion(name, parent, start, end) {
     var self = this;
-    self.name = name;
-    self.start = start;
-    self.end = end;
+    self.name = ko.observable(name);
+    self.parent = parent;
+    self.start = ko.observable(start);
+    self.minLen = ko.observable((end - start));
+    self.maxLen = ko.observable((end - start));
 }
 
 function variableRegion(name, start, end) {
@@ -28,9 +39,10 @@ function variableRegion(name, start, end) {
 
 function matureProtein(name, start, end) {
     var self = this;
-    self.name = name;
-    self.start = start;
-    self.end = end;
+    self.matName = name;
+    //self.matName = ko.observable(name);
+    self.matStart = ko.observable(start);
+    self.matEnd = ko.observable(end);
 }
 
 function toggleHide(self) {
@@ -63,12 +75,38 @@ function AppViewModel() {
     }, self);
 	
 	self.formatedSeq = ko.pureComputed(function() {
-		findORFs(self);
 		return formatSeq(self.validatedSeq());
 	}, self);
 	
 	 self.scaffoldArray = ko.observableArray();    // Initially an empty array
+	 self.RRs = ko.observableArray();
+	 self.VRs = ko.observableArray();
+	 self.MPs = ko.observableArray();
 	 
+	 self.incScaffStart = function(ref) {
+	 	ref.start(ref.start() + 3);	 	
+	 }
+	 self.decScaffStart = function(ref) {
+	 	ref.start(ref.start() - 3);	 	
+	 }
+	 self.incScaffEnd = function(ref) {
+	 	ref.end(ref.end() + 3);	 	
+	 }
+	 self.decScaffEnd = function(ref) {
+	 	ref.end(ref.end() - 3);	 	
+	 }
+	 
+	 
+	 self.inc = function(ref) {
+	 	ref.maxLen(ref.maxLen() + 3);	 	
+	 }
+	 self.dec = function(ref) {
+	 	if (ref.maxLen() <= ref.minLen()) {
+	 		ref.maxLen(ref.minLen());
+	 	} else {
+	 		ref.maxLen(ref.maxLen() - 3);	 	
+	 	}
+	 }
 	 
 	 self.addScaff = function(){
 		alert("Add Scaffold");
@@ -79,8 +117,46 @@ function AppViewModel() {
 		alert("Remove Scaffold " + scaffold.scaffName );
 		self.scaffoldArray.remove(scaffold);
 	}
+	self.addRR = function(){
+		alert("Add RR");
+		self.RRs.push(new randomizedRegion("Rnd.Reg 0 0" , 0 , 0, self));
+	}
 
+	self.removeRR = function(RR) {
+		alert("Remove RR " + randomizedRegion.name );
+		self.RRs.remove(RR);
+	}
+	
+	
+	self.findORFs = function () {
+		var regEx = /ATG((?!(TGA|TAG|TAA)).{3})*(NNN){1,}((?!(TGA|TAG|TAA)).{3})*(TAA|TGA|TAG)/gi;
+		var myArray;
+		//var retArray = [];
+		var scaffoldNum = 1;
+		while ((myArray = regEx.exec(self.validatedSeq())) !== null) {
+  			self.scaffoldArray.push(new scaffold("Scaffold " + myArray.index.toString() + " " + regEx.lastIndex.toString(), myArray.index, regEx.lastIndex, self));
+  			scaffoldNum++;
+		}
+
+		regEx = /(NNN){1,}/gi;
+	
+		while ((myArray = regEx.exec(self.validatedSeq())) !== null) {
+			var parent = "none";
+  			var msg = 'Found ' + myArray[0] + '. ';
+  			msg += 'Next match starts at ' + regEx.lastIndex;
+  			console.log(msg);
+  			ko.utils.arrayForEach(self.scaffoldArray(), function(scaff) {
+  				console.log("Looping" + scaff.scaffName())
+  				if ((myArray.index >= scaff.start()) && regEx.lastIndex <= scaff.end()) {
+  					console.log ("Bingo!" + scaff.scaffName());
+  					parent = scaff.scaffName;
+  				}
+  			});
+			self.RRs.push(new randomizedRegion("Rnd. Reg. " + myArray.index.toString() + " " + regEx.lastIndex.toString(), parent, myArray.index, regEx.lastIndex, self));  		
+		}
+	}
 }
+
 
 
 function findORFs(self) {

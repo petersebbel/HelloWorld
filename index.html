@@ -1,4 +1,3 @@
-
  <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
@@ -8,6 +7,7 @@
 	<title>Title Goes Here</title>
 	
 	<link rel="stylesheet" type="text/css" href="./css/HelloWorld.css">
+	<link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
 	
 	<script src="./js/jquery-2.1.3.min.js"></script>
 	<script src="./js/bootstrap.js"></script>
@@ -22,14 +22,8 @@
 			ko.applyBindings(new AppViewModel());
    		});
  
-    	$(window).load(function() {
-       		console.log( "window loaded" );
-    	});
-
     </script>
-
 </head>
-
 <body>
 
 <p><h1>LibReg</h1></p>
@@ -48,7 +42,7 @@
 	</div>
 </div>
 <br/>
-
+  	<button data-bind="click: $root.findORFs">Analyse Sequences</button>
 <hr/>
 <dl data-bind="foreach: scaffoldArray">
   <dt>
@@ -57,36 +51,54 @@
 					<span class="pull-right minMax" data-bind="click: $root.removeScaff" > x </span>
 				<span class="pull-right minMax" onclick="toggleHide(this)">+-</span>
 
-
 				<label class="label-align">Scaffold Name: </label><input  data-bind="textInput: scaffName"><br />
-				<label class="label-align">Start: </label>        <input  data-bind="value: start"><br />
-				<label class="label-align">End: </label>          <input  data-bind="value: end"><br />
+				<label class="label-align">Start: </label>        <input  data-bind="value: start">
+				<span class="minMax" data-bind="click: $root.incScaffStart">^</span>
+			    <span class="minMax" data-bind="click: $root.decScaffStart">v</span>
+				<br />
+				<label class="label-align">End: </label>          <input  data-bind="value: end">
+				<span class="minMax" data-bind="click: $root.incScaffEnd" > ^ </span>
+			    <span class="minMax" data-bind="click: $root.decScaffEnd" > v </span>
+				<br />
+				
 	</div>
 	<div class="innerFrame">
 		<pre data-bind="text: seq"></pre>
 	</div>
-
+	
   </div>
-
-
   </dt>
   <br/>
 </dl>
 
-  	<button data-bind="click: $root.addScaff">Add Scaffold</button>
+
+<button data-bind="click: $root.addScaff">Add Scaffold</button>
 <hr/>
-<table class="scaffoldTable">
+<table class="table table-bordered">
     <thead><tr>
-        <th>Scaffold Name</th><th>start</th><th>end</th><th></th>
+        <th>Randomized Region</th>
+        <th>Scaffold</th>
+        <th>start</th>
+        <th>min Length</th>
+        <th>max Length</th>
+        <th>change</th>
+        <th>remove</th>
     </tr></thead>
-    <tbody data-bind="foreach: scaffoldArray">
+    <tbody data-bind="foreach: RRs">
         <tr>
-            <td data-bind="text: scaffName"></td>
-            <td><span data-bind="value: start"></span></td>
-            <td data-bind="value: end"></td>
+            <td><input data-bind = "textInput: name"/></td>
+            <td data-bind = "text: parent"></td>
+            <td data-bind = "text: start"></td>
+            <td data-bind = "text: minLen"></td>
+            <td data-bind = "text: maxLen"></td>
+           <td><span class="minMax" data-bind="click: $root.inc">^</span><span class="minMax" data-bind="click: $root.dec">v</span></td>
+           
+           <td><span class="minMax" data-bind="click: $root.removeRR">x</span></td>
         </tr>    
     </tbody>
 </table>
+<h2>Debug</h2>
+<div> <span data-bind="text: ko.toJS(AppViewModel)"></span></div>
 </body>
 </html>
 
