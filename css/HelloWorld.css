@@ -15,6 +15,13 @@
 	float: left;
 }
 
+.aa-box {
+	
+    font-family: monospace;
+    white-space: pre;
+    margin: 1em 0;
+}
+
 .minMax {
 	border-style: solid;
     border-width: 1px;

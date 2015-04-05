@@ -4,7 +4,7 @@
 
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8">
-	<title>Title Goes Here</title>
+	<title>Library Registration</title>
 	
 	<link rel="stylesheet" type="text/css" href="./css/HelloWorld.css">
 	<link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
@@ -21,13 +21,11 @@
     	     // Activates knockout.js
 			ko.applyBindings(new AppViewModel());
    		});
- 
     </script>
 </head>
 <body>
 
 <p><h1>LibReg</h1></p>
-
 
 <p>Library Sequence: <br/><textarea class="innerFrame" data-bind="textInput: inputSeq" ></textarea></p>
 
@@ -44,37 +42,36 @@
 <br/>
   	<button data-bind="click: $root.findORFs">Analyse Sequences</button>
 <hr/>
+
+<h2 data-bind="visible: scaffoldArray().length > 0">Scaffolds</h2>
 <dl data-bind="foreach: scaffoldArray">
   <dt>
   <div class="outerFrame">
 	<div class="titleFrame">
-					<span class="pull-right minMax" data-bind="click: $root.removeScaff" > x </span>
+				<span class="pull-right minMax" data-bind="click: $root.removeScaff" > x </span>
 				<span class="pull-right minMax" onclick="toggleHide(this)">+-</span>
-
 				<label class="label-align">Scaffold Name: </label><input  data-bind="textInput: scaffName"><br />
 				<label class="label-align">Start: </label>        <input  data-bind="value: start">
-				<span class="minMax" data-bind="click: $root.incScaffStart">^</span>
-			    <span class="minMax" data-bind="click: $root.decScaffStart">v</span>
+				<span class="minMax" data-bind="click: $root.incStart">^</span>
+			    <span class="minMax" data-bind="click: $root.decStart">v</span>
 				<br />
 				<label class="label-align">End: </label>          <input  data-bind="value: end">
-				<span class="minMax" data-bind="click: $root.incScaffEnd" > ^ </span>
-			    <span class="minMax" data-bind="click: $root.decScaffEnd" > v </span>
+				<span class="minMax" data-bind="click: $root.incEnd" > ^ </span>
+			    <span class="minMax" data-bind="click: $root.decEnd" > v </span>
 				<br />
-				
 	</div>
 	<div class="innerFrame">
 		<pre data-bind="text: seq"></pre>
 	</div>
-	
   </div>
   </dt>
   <br/>
 </dl>
 
-
 <button data-bind="click: $root.addScaff">Add Scaffold</button>
 <hr/>
-<table class="table table-bordered">
+<h2 data-bind="visible: RRs().length > 0">Randomized Region</h2>
+<table class="table table-bordered"  data-bind="visible: RRs().length > 0">
     <thead><tr>
         <th>Randomized Region</th>
         <th>Scaffold</th>
@@ -87,18 +84,98 @@
     <tbody data-bind="foreach: RRs">
         <tr>
             <td><input data-bind = "textInput: name"/></td>
-            <td data-bind = "text: parent"></td>
+            <td data-bind = "text: parent.scaffName"></td>
             <td data-bind = "text: start"></td>
             <td data-bind = "text: minLen"></td>
             <td data-bind = "text: maxLen"></td>
-           <td><span class="minMax" data-bind="click: $root.inc">^</span><span class="minMax" data-bind="click: $root.dec">v</span></td>
+           <td><span class="minMax" data-bind="click: $root.incMaxLen">^</span><span class="minMax" data-bind="click: $root.decMaxLen">v</span></td>
            
            <td><span class="minMax" data-bind="click: $root.removeRR">x</span></td>
         </tr>    
     </tbody>
 </table>
+
+
+<h2 data-bind="visible: scaffoldArray().length > 0">Additional Features</h2>
+<table class="table table-bordered" data-bind="visible: scaffoldArray().length > 0">
+    <thead><tr>
+        <th>Scaffold</th>
+        <th>Add Mat Prot</th>
+        <th>Add Var Reg</th>
+    </tr></thead>
+    <tbody data-bind="foreach: scaffoldArray">
+        <tr>
+            <td data-bind = "text: scaffName"></td>
+            <td><button data-bind="click: $root.addMP">Add Mature Protein</button></td>
+            <td><button data-bind="click: $root.addVR">Add Variable Region</button></td>
+        </tr>    
+    </tbody>
+
+</table>
+<h2 data-bind="visible: MPs().length > 0">Mature Proteins</h2>   
+<table class="table table-bordered" data-bind="visible: MPs().length > 0">
+    <thead><tr>
+        <th>Scaffold</th>
+        <th>Prot. Name</th>
+        <th>start</th>
+        <th></th>
+        <th>end</th>
+        <th></th>
+        <th>remove</th>
+    </tr></thead>
+    <tbody data-bind="foreach: MPs">
+        <tr>
+            <td data-bind = "text: parent.scaffName"></td>
+            <td><input data-bind = "textInput: name"/></td>
+            <td data-bind = "text: start"></td>
+            <td><span class="minMax" data-bind="click: $root.incStart">^</span><span class="minMax" data-bind="click: $root.decStart">v</span></td>
+            <td data-bind = "text: end"></td>
+            <td><span class="minMax" data-bind="click: $root.incEnd">^</span><span class="minMax" data-bind="click: $root.decEnd">v</span></td>
+			<td><span class="minMax" data-bind="click: $root.removeMP">x</span></td>        
+        </tr>
+        <tr>
+        	<td colspan="7" class="aa-box" data-bind = "text: aaSeq"></td>
+        </tr>
+    </tbody>
+</table>    
+    
+<h2 data-bind="visible: VRs().length > 0">Variable Regions</h2>
+<table class="table table-bordered" data-bind="visible: VRs().length > 0">
+    <thead><tr>
+        <th>Scaffold</th>
+        <th>Var.Reg.Name</th>
+        <th>start</th>
+        <th></th>
+        <th>end</th>
+        <th></th>
+        <th>remove</th>
+    </tr></thead>
+    <tbody data-bind="foreach: VRs">
+        <tr>
+            <td data-bind = "text: parent.scaffName"></td>
+            <td><input data-bind = "textInput: name"/></td>
+            <td data-bind = "text: start"></td>
+            <td><span class="minMax" data-bind="click: $root.incStart">^</span><span class="minMax" data-bind="click: $root.decStart">v</span></td>
+            <td data-bind = "text: end"></td>
+            <td><span class="minMax" data-bind="click: $root.incEnd">^</span><span class="minMax" data-bind="click: $root.decEnd">v</span></td>
+			<td><span class="minMax" data-bind="click: $root.removeVR">x</span></td>        
+        </tr>
+        <tr>
+        	<td colspan="7" class="aa-box" data-bind = "text: aaSeq"></td>
+        </tr>
+    </tbody>
+</table>    
+    
+
 <h2>Debug</h2>
-<div> <span data-bind="text: ko.toJS(AppViewModel)"></span></div>
+<div>
+	<div>
+		JS String for Debugging
+		<span class="pull-right minMax" onclick="toggleHide(this)">+-</span>
+	</div>
+		<div> <span data-bind="text: ko.toJS(AppViewModel)"></span>
+	</div>
+</div>
 </body>
 </html>
 
