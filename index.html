@@ -19,7 +19,8 @@
     	$(document).ready(function() {
     	    console.log( "document loaded" );
     	     // Activates knockout.js
-			ko.applyBindings(new AppViewModel());
+    	     globalVModel = new AppViewModel();
+			ko.applyBindings(globalVModel);
    		});
     </script>
 </head>
@@ -154,9 +155,9 @@
         <tr>
             <td data-bind = "text: parent.scaffName"></td>
             <td><input data-bind = "textInput: name"/></td>
-            <td data-bind = "text: start"></td>
+            <td><input data-bind = "value: start"/></td>
             <td><span class="minMax" data-bind="click: $root.incStart">^</span><span class="minMax" data-bind="click: $root.decStart">v</span></td>
-            <td data-bind = "text: end"></td>
+            <td><input data-bind = "value: end"/></td>
             <td><span class="minMax" data-bind="click: $root.incEnd">^</span><span class="minMax" data-bind="click: $root.decEnd">v</span></td>
 			<td><span class="minMax" data-bind="click: $root.removeVR">x</span></td>        
         </tr>
@@ -173,7 +174,8 @@
 		JS String for Debugging
 		<span class="pull-right minMax" onclick="toggleHide(this)">+-</span>
 	</div>
-		<div> <span data-bind="text: ko.toJS(AppViewModel)"></span>
+		<pre data-bind="text: ko.toJSON($root, null, 2)"></pre>
+
 	</div>
 </div>
 </body>
