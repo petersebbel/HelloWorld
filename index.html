@@ -85,7 +85,7 @@
     <tbody data-bind="foreach: RRs">
         <tr>
             <td><input data-bind = "textInput: name"/></td>
-            <td data-bind = "text: parent.scaffName"></td>
+            <td data-bind = "text: parentScaffName"></td>
             <td data-bind = "text: start"></td>
             <td data-bind = "text: minLen"></td>
             <td data-bind = "text: maxLen"></td>
@@ -126,7 +126,7 @@
     </tr></thead>
     <tbody data-bind="foreach: MPs">
         <tr>
-            <td data-bind = "text: parent.scaffName"></td>
+            <td data-bind = "text: parentScaffName"></td>
             <td><input data-bind = "textInput: name"/></td>
             <td data-bind = "text: start"></td>
             <td><span class="minMax" data-bind="click: $root.incStart">^</span><span class="minMax" data-bind="click: $root.decStart">v</span></td>
@@ -153,7 +153,7 @@
     </tr></thead>
     <tbody data-bind="foreach: VRs">
         <tr>
-            <td data-bind = "text: parent.scaffName"></td>
+            <td data-bind = "text: parentScaffName"></td>
             <td><input data-bind = "textInput: name"/></td>
             <td><input data-bind = "value: start"/></td>
             <td><span class="minMax" data-bind="click: $root.incStart">^</span><span class="minMax" data-bind="click: $root.decStart">v</span></td>

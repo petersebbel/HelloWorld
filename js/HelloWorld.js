@@ -11,29 +11,32 @@ function scaffold(name, start, end) {
     });
 }
 
-function randomizedRegion(name, start, end ) {
+function randomizedRegion(name, start, end, parentScaffName) {
     var self    = this;
     self.name   = ko.observable(name);
     self.start  = ko.observable(start);
     self.minLen = ko.observable((end - start));
     self.maxLen = ko.observable((end - start));
+    self.parentScaffName = parentScaffName;
 }
 
-function variableRegion(name, start, end) {
+function variableRegion(name, start, end, parentScaffName) {
     var self    = this;
     self.name   = ko.observable(name);
     self.start  = ko.observable(start);
     self.end    = ko.observable(end);
+    self.parentScaffName = parentScaffName;
     self.aaSeq  = ko.pureComputed(function(){
     	return dna2aa(globalVModel.doubleSeq().substring(self.start(), self.end())).replace(/(.{1,80})/g, '$1\n');
     }, self);
 }
 
-function matureProtein(name, start, end) {
+function matureProtein(name, start, end, parentScaffName) {
     var self    = this;
     self.name   = ko.observable(name);
     self.start  = ko.observable(start);
     self.end    = ko.observable(end);
+    self.parentScaffName = parentScaffName;
     self.aaSeq  = ko.pureComputed(function(){
     	return dna2aa(globalVModel.doubleSeq().substring(self.start(), self.end())).replace(/(.{1,80})/g, '$1\n');
     }, self);
@@ -96,7 +99,7 @@ function AppViewModel() {
 	};
 	
 	 self.addMP = function(ref){
-		self.MPs.push(new matureProtein("Mature Prot " + ref.scaffName() , ref.start() , ref.end()));
+		self.MPs.push(new matureProtein("Mature Prot " + ref.scaffName() , ref.start() , ref.end(), ref.scaffName()));
 	};
 
 	self.removeScaff = function(scaffold) {
@@ -113,7 +116,7 @@ function AppViewModel() {
 	};
 	
 	self.addVR = function(ref){
-		self.VRs.push(new variableRegion("Var.Reg. "+ ref.scaffName() , ref.start() , ref.end()));
+		self.VRs.push(new variableRegion("Var.Reg. "+ ref.scaffName() , ref.start() , ref.end(), ref.scaffName()));
 	};
 	
 	self.removeVR = function(VR) {
@@ -143,7 +146,7 @@ function AppViewModel() {
   					parent = scaff;
   				}
   			});
-			self.RRs.push(new randomizedRegion("Rnd. Reg. " + myArray.index.toString() + " " + regEx.lastIndex.toString(), myArray.index, regEx.lastIndex));  		
+			self.RRs.push(new randomizedRegion("Rnd. Reg. " + myArray.index.toString() + " " + regEx.lastIndex.toString(), myArray.index, regEx.lastIndex, parent.scaffName()));  		
 		}
 	};
 }
