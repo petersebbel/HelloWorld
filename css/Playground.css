@@ -1,0 +1,68 @@
+.outerFrame {
+	border-style: solid;
+    border-width: 2px;
+    width: 602px;
+}
+
+.label-align {
+	display: inline-block;
+	width: 120px;
+	text-align: left;
+}
+
+.label 
+      { display: inline-block; 
+      width: 140px; 
+      text-align: right; 
+     }​
+
+
+.input-align {
+	display: inline-block;
+	float: left;
+}
+
+.aa-box {
+	
+    font-family: monospace;
+    white-space: pre;
+    margin: 1em 0;
+}
+
+.minMax {
+	border-style: solid;
+    border-width: 1px;
+}
+
+.scaffoldTable{
+	border-style: solid;
+    border-width: 1px;
+}
+
+.titleFrame {
+	border-style: solid;
+    border-width: 1px;
+	width: 600px;
+}
+
+.innerFrame {
+	display: block;
+	border-style: solid;
+    border-width: 1px;
+	width: 600px;
+}
+
+.pull-left {
+  float: left !important;
+}
+.pull-right {
+  float: right !important;
+}
+
+// Usage as mixins
+.element {
+  .pull-left();
+}
+.another-element {
+  .pull-right();
+}
