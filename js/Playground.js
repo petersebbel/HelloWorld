@@ -142,16 +142,16 @@ function AppViewModel() {
     		});
 		});
 		ko.utils.arrayForEach(self.seqs(), function(seq) {
-		   console.log("Working on Seq " + seq.name()); //"aa", bb", "cc"
+		   //console.log("Working on Seq " + seq.name()); //"aa", bb", "cc"
 			ko.utils.arrayForEach(seq.scaffoldArray(), function(scaff) {
-				console.log("Working on Scaff " + scaff.name());
+				///console.log("Working on Scaff " + scaff.name());
 				ko.utils.arrayForEach(scaff.FPArray(), function(FP) {
 					//console.log("iterating " + seq.name());
 					//console.log("iterating " + scaff.name());
 					//console.log("iterating " + FP.seq());
 					
 					if (allFPs[FP.seq()] > 1) {
-						console.log("Dropped " + FP.seq());
+						//console.log("Dropped " + FP.seq());
 					} else {
 						scaff.validFPs.push(new fp(FP.seq(), FP.start(), FP.end()));
 						//console.log("Probably found a unique Fingerprint" + FP.seq() + " for scaff " + scaff.name());
