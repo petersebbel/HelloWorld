@@ -30,12 +30,15 @@
 <div class="row">
 	<div class="col-md-6"><h2>Playing Fingerprinting</h2>
 		<label class="label-align">Enter Seq</label>
-		<input data-bind="textInput: currentSeq"/><br/>
+		<input data-bind="textInput: $root.currSeq.seq"/><br/>
 		<label class="label-align">Enter Seq Name</label>
-		<input data-bind="textInput: currentSeqName"/>
+		<input data-bind="textInput: currSeq.Name"/>
 		<br/>
 		<label class="label-align">Number of Seqs</label> <span data-bind="text: noSeqs"></span>
 		<br/>
+		<button data-bind="click: analyseCurrSeq">Analyse current Seq</button>
+		<button data-bind="click: updateUniqueFPs">Search for FPs</button>
+
 		<button data-bind="click: addSeq">Add current Seq to Collection</button>
 		<hr/>
 		<h3>Details</h3>

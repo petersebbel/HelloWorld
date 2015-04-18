@@ -57,7 +57,6 @@ function scaffold (name, seq) {
 	 self.noFPs = ko.pureComputed(function(){
 	 	return self.FPArray().length;
 	 });
-
      for(var i = 0; i < (self.seq().length  - 1*globalPGModel.FPlength()); i++) {
   	  	var FP = self.seq().substring(i, (i + 1*globalPGModel.FPlength()));
   		if (FP.search(/N/i) === -1) {
@@ -79,43 +78,46 @@ function sequence(name, seq) {
     	return self.ORFArray().length;
     });
     
-    var regEx  = /ATG((?!(TGA|TAG|TAA)).{3})*(NNN){1,}((?!(TGA|TAG|TAA)).{3})*(TAA|TGA|TAG)/gi;
-	var myArray;
-	
-	//var dArray = ORFcoords (regEx, self.seq(), true);
-	//for (var ORF in dArray) {
-	//	console.log(ORF.name);
-	//}
-	
-	
-	
-	while ((myArray = regEx.exec(self.seq())) !== null) {
-  		self.scaffoldArray.push(new scaffold("Scaff " + myArray.index.toString() + " " + regEx.lastIndex.toString(), self.seq().substring(myArray.index, regEx.lastIndex)));
-	}  
-	regEx  = /ATG((?!(TGA|TAG|TAA|NNN)).{3}){150,}(TAA|TGA|TAG)/gi;
-	myArray = [];
-	while ((myArray = regEx.exec(self.seq())) !== null) {
-  		self.ORFArray.push(new scaffold("ORF " + myArray.index.toString() + " " + regEx.lastIndex.toString(), self.seq().substring(myArray.index, regEx.lastIndex)));
-	}  
+	self.analyseSeq = function () {
+		var regEx  = /ATG((?!(TGA|TAG|TAA)).{3})*(NNN){1,}((?!(TGA|TAG|TAA)).{3})*(TAA|TGA|TAG)/gi;
+		var myArray;
+		while ((myArray = regEx.exec(self.seq())) !== null) {
+			self.scaffoldArray.push(new scaffold("Scaff " + myArray.index.toString() + " " + regEx.lastIndex.toString(), self.seq().substring(myArray.index, regEx.lastIndex)));
+		}  
+		regEx  = /ATG((?!(TGA|TAG|TAA|NNN)).{3}){150,}(TAA|TGA|TAG)/gi;
+		myArray = [];
+		while ((myArray = regEx.exec(self.seq())) !== null) {
+			self.ORFArray.push(new scaffold("ORF " + myArray.index.toString() + " " + regEx.lastIndex.toString(), self.seq().substring(myArray.index, regEx.lastIndex)));
+			console.log ("Pushed ORF " + myArray.index.toString() + " " + regEx.lastIndex.toString());
+		}  
+	}
 }
-
 
 function AppViewModel() {
 	var self = this;
-	self.currentSeq = ko.observable();
-	self.currentORFs = ko.observableArray();
+	//self.currentSeq = ko.observable();
+	//self.currentORFs = ko.observableArray();
 	self.seqs       = ko.observableArray();
 	self.FPlength   = ko.observable(10);
     self.noSeqs     = ko.pureComputed(function() {
 		return self.seqs().length;
     }, self);
-    self.currentSeqName = ko.observable("PlasmidNo " + (self.noSeqs() +1).toString());
+	self.currSeq = new sequence ("PlasmidNo " + (self.noSeqs() +1).toString(), "");
+
+    //self.currentSeqName = ko.observable("PlasmidNo " + (self.noSeqs() +1).toString());
 	self.addSeq = function(){
-		self.seqs.push(new sequence(self.currentSeqName(), self.currentSeq()));
-		self.currentSeq('');
-		self.currentSeqName("PlasmidNo " + (self.noSeqs() +1).toString());
-		self.updateUniqueFPs();
+		self.seqs.push(self.currSeq);
+		//self.seqs.push(new sequence(self.currentSeqName(), self.currentSeq()));
+		//self.currentSeq('');
+		//self.currentSeqName("PlasmidNo " + (self.noSeqs() +1).toString());
+		self.currSeq = new sequence ("PlasmidNo " + (self.noSeqs() +1).toString(), "");
+
+		//self.updateUniqueFPs();
 	}; 
+	self.analyseCurrSeq = function(){
+		self.currSeq.analyseSeq();
+	};
+
 	self.uniqueFPs = ko.observableArray();
 	var allFPs = {};
 	var totalFPs = 0;
